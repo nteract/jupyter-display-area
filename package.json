@@ -16,19 +16,16 @@
   "bugs": {
     "url": "https://github.com/rgbkrk/jupyter-output-area/issues"
   },
-  "devDependencies": {
-    "gulp": "~3.6.0",
-    "gulp-sass": "~0.7.1",
-    "gulp-concat": "~2.2.0",
-    "gulp-autoprefixer": "0.0.6",
-    "gulp-load-plugins": "~0.5.0",
-    "gulp-plumber": "~0.5.6",
-    "gulp-browserify": "~0.5.0",
-    "gulp-ruby-sass": "~0.4.1",
-    "gulp-connect": "~2.0.4",
-    "es6ify": "~1.2.0",
-    "gulp-uglify": "~0.3.1",
-    "gulp-rename": "~1.2.0",
-    "gulp-vulcanize": "~0.2.1"
+  "dependencies": {
+    "es6ify": "^1.6.0",
+    "gulp": "^3.9.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-connect": "^2.2.0",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-ruby-sass": "^1.0.5",
+    "gulp-uglify": "^1.2.0",
+    "gulp-vulcanize": "^6.0.1"
   }
 }
