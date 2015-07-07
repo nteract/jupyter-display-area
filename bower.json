@@ -1,0 +1,21 @@
+{
+  "name": "jupyter-output-area",
+  "version": "0.0.0",
+  "homepage": "https://github.com/rgbkrk/jupyter-output-area",
+  "authors": [
+    "Kyle Kelley <rgbkrk@gmail.com>"
+  ],
+  "description": "Prototype Output Area for Jupyter",
+  "main": "dist/output-area.html",
+  "keywords": [
+    "jupyter"
+  ],
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
