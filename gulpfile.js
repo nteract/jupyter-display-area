@@ -4,7 +4,7 @@ var gulp = require('gulp'),
 
 gulp.task('js', function () {
   gulp.src([
-    'src/output-area.js',
+    'src/jupyter-display-area.js',
   ])
     .pipe($.plumber())
     .pipe($.browserify({
@@ -16,15 +16,15 @@ gulp.task('js', function () {
 });
 
 gulp.task('html', function () {
-  gulp.src('src/output-area.html')
-    .pipe($.rename('output-area.local.html'))
+  gulp.src('src/jupyter-display-area.html')
+    .pipe($.rename('jupyter-display-area.local.html'))
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('vulcanize', function () {
-  gulp.src('dist/output-area.local.html')
+  gulp.src('dist/jupyter-display-area.local.html')
     .pipe($.vulcanize({dest: 'dist', inline: true}))
-    .pipe($.rename('output-area.html'))
+    .pipe($.rename('jupyter-display-area.html'))
     .pipe(gulp.dest('dist'));
 });
 
@@ -40,7 +40,7 @@ gulp.task('default', ['build', 'connect'], function () {
   gulp.watch(['src/*.*js'], ['js']);
   gulp.watch(['src/*.html'], ['html']);
   gulp.watch(['bower_components'], ['copy']);
-  gulp.watch(['dist/output-area.local.html', 'dist/output-area.js', 'dist/output-area.css'], ['vulcanize']);
+  gulp.watch(['dist/jupyter-display-area.local.html', 'dist/jupyter-display-area.js', 'dist/jupyter-display-area.css'], ['vulcanize']);
 
   gulp.watch(['index.html', 'dist/**.*', 'demos/**.*'], function (event) {
     return gulp.src(event.path)

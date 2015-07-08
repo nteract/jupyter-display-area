@@ -1,2 +1,3 @@
-# jupyter-output-area
-Prototype Web Component for Jupyter Output areas
+# jupyter-display-area
+
+Prototype Web Component for Jupyter Display areas

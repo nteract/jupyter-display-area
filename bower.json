@@ -1,12 +1,12 @@
 {
-  "name": "jupyter-output-area",
+  "name": "jupyter-display-area",
   "version": "0.0.0",
-  "homepage": "https://github.com/rgbkrk/jupyter-output-area",
+  "homepage": "https://github.com/rgbkrk/jupyter-display-area",
   "authors": [
     "Kyle Kelley <rgbkrk@gmail.com>"
   ],
-  "description": "Prototype Output Area for Jupyter",
-  "main": "dist/output-area.html",
+  "description": "Prototype display Area for Jupyter",
+  "main": "dist/jupyter-display-area.html",
   "keywords": [
     "jupyter"
   ],

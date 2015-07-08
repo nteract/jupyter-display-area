@@ -1,20 +1,20 @@
 {
-  "name": "jupyter-output-area",
+  "name": "jupyter-display-area",
   "version": "0.0.0",
-  "description": "Prototype Output area for Jupyter kernel rich output",
-  "main": "dist/output-area.html",
+  "description": "Prototype Display area for Jupyter kernel rich output",
+  "main": "dist/jupyter-display-area.html",
   "readme": "README.md",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rgbkrk/jupyter-output-area.git"
+    "url": "git://github.com/rgbkrk/jupyter-display-area.git"
   },
   "author": "Kyle Kelley",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/rgbkrk/jupyter-output-area/issues"
+    "url": "https://github.com/rgbkrk/jupyter-display-area/issues"
   },
   "dependencies": {
     "es6ify": "^1.6.0",
