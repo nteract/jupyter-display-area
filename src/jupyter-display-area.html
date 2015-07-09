@@ -11,29 +11,5 @@
   <div id="outputs"></div>
 </template>
 
-<script>
-(function () {
-  var importDoc = document.currentScript.ownerDocument;
-
-  var resultPrototype = Object.create(HTMLElement.prototype);
-
-  resultPrototype.createdCallback = function() {
-    var t = importDoc.querySelector('#tmpl-result');
-    var node = document.importNode(t.content, true);
-    this.root = this.createShadowRoot();
-    this.root.appendChild(node);
-
-    this.state = this.root.getElementById("state");
-    this.outputContainer = this.root.getElementById("output-container");
-
-  };
-
-
-  resultPrototype.consume = function (message) {
-    // message comes from IOPub or whatever
-
-  }
-
-  document.registerElement('jupyter-display-area', {prototype: resultPrototype});
-})();
+<script src="jupyter-display-area.js">
 </script>
