@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-  es6ify = require('es6ify'),
+  uglify = require('gulp-uglify'),
   babel = require("gulp-babel"),
   vulcanize = require("gulp-vulcanize"),
   rename = require("gulp-rename"),
@@ -10,6 +10,7 @@ gulp.task('js', function () {
   return gulp.src([
     'src/jupyter-display-area.js',
     ]).pipe(babel())
+    .pipe(uglify())
     .pipe(gulp.dest('dist'));
 });
 
