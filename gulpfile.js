@@ -4,6 +4,7 @@ var gulp = require('gulp'),
   vulcanize = require("gulp-vulcanize"),
   rename = require("gulp-rename"),
   debug = require('gulp-debug'),
+  shell = require('gulp-shell'),
   connect = require("gulp-connect");
 
 gulp.task('js', function () {
@@ -22,23 +23,14 @@ gulp.task('html', function () {
 
 gulp.task('vulcanize', function () {
   gulp.src('dist/jupyter-display-area.local.html')
-    .pipe(vulcanize({dest: 'dist', inline: true}))
-    .pipe(rename('jupyter-display-area.html'))
-    .pipe(gulp.dest('dist'));
+    .pipe(shell(["vulcanize --inline-scripts <%= file.path %> > dist/jupyter-display-area.html"]));
 });
 
-gulp.task('copy', function () {
-  gulp.src([ // not just yet
-  ])
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('build', ['js', 'html', 'copy', 'vulcanize']);
+gulp.task('build', ['js', 'html', 'vulcanize']);
 
 gulp.task('default', ['build', 'connect'], function () {
   gulp.watch(['src/*.*js'], ['js']);
   gulp.watch(['src/*.html'], ['html']);
-  gulp.watch(['bower_components'], ['copy']);
   gulp.watch(['dist/jupyter-display-area.local.html', 'dist/jupyter-display-area.js'], ['vulcanize']);
 
   gulp.watch(['index.html', 'dist/**.*'], function (event) {
