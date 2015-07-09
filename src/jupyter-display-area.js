@@ -7,7 +7,7 @@ class JupyterDisplayArea extends HTMLElement {
 
     this.shadow = this.createShadowRoot();
     this.shadow.appendChild(template);
-    this.outputs = this.root.getElementById("outputs");
+    this.outputs = this.shadow.getElementById("outputs");
   }
 
   /**
