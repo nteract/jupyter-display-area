@@ -533,7 +533,7 @@ class JupyterDisplayArea extends HTMLElement {
         return toinsert;
     }
 
-    var append_pdf = function (pdf, md, element) {
+    append_pdf(pdf, md, element) {
         var type = 'application/pdf';
         var toinsert = this.create_output_subarea(md, "output_pdf", type);
 
