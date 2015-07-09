@@ -40,9 +40,9 @@ gulp.task('default', ['build', 'connect'], function () {
   gulp.watch(['src/*.*js'], ['js']);
   gulp.watch(['src/*.html'], ['html']);
   gulp.watch(['bower_components'], ['copy']);
-  gulp.watch(['dist/jupyter-display-area.local.html', 'dist/jupyter-display-area.js', 'dist/jupyter-display-area.css'], ['vulcanize']);
+  gulp.watch(['dist/jupyter-display-area.local.html', 'dist/jupyter-display-area.js'], ['vulcanize']);
 
-  gulp.watch(['index.html', 'dist/**.*', 'demos/**.*'], function (event) {
+  gulp.watch(['index.html', 'dist/**.*'], function (event) {
     return gulp.src(event.path)
       .pipe($.connect.reload());
   });
