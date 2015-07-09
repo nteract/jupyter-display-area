@@ -1,30 +1,28 @@
 var gulp = require('gulp'),
   es6ify = require('es6ify'),
-  $ = require('gulp-load-plugins')();
+  babel = require("gulp-babel"),
+  vulcanize = require("gulp-vulcanize"),
+  rename = require("gulp-rename"),
+  debug = require('gulp-debug'),
+  connect = require("gulp-connect");
 
 gulp.task('js', function () {
-  gulp.src([
+  return gulp.src([
     'src/jupyter-display-area.js',
-  ])
-    .pipe($.plumber())
-    .pipe($.browserify({
-      add: [ es6ify.runtime ],
-      transform: ['es6ify']
-    }))
-    .pipe($.uglify())
+    ]).pipe(babel())
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('html', function () {
   gulp.src('src/jupyter-display-area.html')
-    .pipe($.rename('jupyter-display-area.local.html'))
+    .pipe(rename('jupyter-display-area.local.html'))
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('vulcanize', function () {
   gulp.src('dist/jupyter-display-area.local.html')
-    .pipe($.vulcanize({dest: 'dist', inline: true}))
-    .pipe($.rename('jupyter-display-area.html'))
+    .pipe(vulcanize({dest: 'dist', inline: true}))
+    .pipe(rename('jupyter-display-area.html'))
     .pipe(gulp.dest('dist'));
 });
 
@@ -44,12 +42,12 @@ gulp.task('default', ['build', 'connect'], function () {
 
   gulp.watch(['index.html', 'dist/**.*'], function (event) {
     return gulp.src(event.path)
-      .pipe($.connect.reload());
+      .pipe(connect.reload());
   });
 });
 
 gulp.task('connect', function () {
-  $.connect.server({
+  connect.server({
     root: [__dirname],
     port: 1983,
     livereload: {port: 2983}
