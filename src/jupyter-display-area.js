@@ -18,10 +18,17 @@ class JupyterDisplayArea extends HTMLElement {
     while(o.firstChild) { o.removeChild(o.firstChild); }
   }
 
-  display(message) {
+  handle(message) {
     if(! message.header || ! message.header.msg_type){
       return;
     }
+
+    let p = document.createElement("p");
+    let text = document.createTextNode(message.header.msg_type);
+
+    p.appendChild(text);
+
+    this.shadow.appendChild(p);
 
     switch(message.header.msg_type) {
       case "execute_result":

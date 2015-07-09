@@ -59,6 +59,23 @@
 </head>
 <body>
   <h1>Jupyter Display Area</h1>
-  <jupyter-display-area></jupyter-display-area>
+  <jupyter-display-area id="play-display"></jupyter-display-area>
+
+  <script>
+  function consumeMessages(messages){
+      area = document.querySelector("#play-display");
+      messages.forEach(function(message) {
+          area.handle(message);
+      })
+  }
+
+  fetch('demo_data/sample.json')
+    .then(function(response) {
+      return response.text()
+    }).then(function(body) {
+      consumeMessages(JSON.parse(body));
+    })
+  </script>
+
 </body>
 </html>
