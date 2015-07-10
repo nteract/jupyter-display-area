@@ -9,7 +9,7 @@ var gulp = require('gulp'),
 
 gulp.task('js', function () {
   return gulp.src([
-    'src/jupyter-display-area.js',
+    'src/jupyter-display-area.js'
     ]).pipe(babel())
     .pipe(uglify())
     .pipe(gulp.dest('dist'));
