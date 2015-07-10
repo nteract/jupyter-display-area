@@ -204,10 +204,12 @@ class JupyterDisplayArea extends HTMLElement {
         };
 
         let template = owner.querySelector("#tmpl-jupyter-display-area");
+        let node = document.importNode(template.content, true);
 
         this.shadow = this.createShadowRoot();
-        this.shadow.appendChild(template);
-        this.outputs = this.shadow.getElementById("outputs");
+        this.shadow.appendChild(node);
+
+        this.element = node.getElementById("outputs");
     }
 
     /**
@@ -317,7 +319,7 @@ class JupyterDisplayArea extends HTMLElement {
             console.log(json);
             console.log(this.outputs);
             console.log(this);
-            //this.outputs.push(json);
+            this.outputs.push(json);
         }
     }
 
@@ -504,7 +506,7 @@ class JupyterDisplayArea extends HTMLElement {
          * under any circumstances.
          */
         try {
-            this.appendChild(toinsert);
+            this.element.appendChild(toinsert);
         } catch(err) {
             console.log(err);
             // Create an actual output_area and output_subarea, which creates
@@ -516,7 +518,7 @@ class JupyterDisplayArea extends HTMLElement {
 
             toinsert.appendChild(subarea);
             this._append_javascript_error(err, subarea);
-            this.appendChild(toinsert);
+            this.element.appendChild(toinsert);
         }
     }
 
