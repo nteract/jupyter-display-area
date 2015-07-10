@@ -25,6 +25,7 @@ class JupyterDisplayArea extends HTMLElement {
 
         // Initialize instance variables.
         this.renderers = [new TextRenderer()];
+        this.fallback_renderer = new TextRenderer();
 
         // 'Private'
         this._outputs = [];
@@ -162,6 +163,15 @@ class JupyterDisplayArea extends HTMLElement {
         }
     }
 
+    get_renderer(mimetype) {
+        for (let renderer of this.renderers) {
+            if (mimetype === renderer.mimetype) {
+                return renderer;
+            }
+        }
+        return null;
+    }
+
     /**
      * Appends stream data to the output area.
      * @param  {object} json - see nbformat
@@ -198,38 +208,29 @@ class JupyterDisplayArea extends HTMLElement {
     }
 
     _append_mime_bundle(json, metadata) {
-        // var display_order = [
-        //     'application/javascript',
-        //     'text/html',
-        //     'text/markdown',
-        //     'text/latex',
-        //     'image/svg+xml',
-        //     'image/png',
-        //     'image/jpeg',
-        //     'application/pdf',
-        //     'text/plain'
-        // ];
-        //
-        // for (var i=0; i < display_order.length; i++) {
-        //     var type = display_order[i];
-        //     var append = append_map[type];
-        //     if ((json.data[type] !== undefined) && append) {
-        //         var value = json.data[type];
-        //         var md = json.metadata || {};
-        //         var toinsert = append.apply(this, [value, md, element]);
-        //         toinsert.className += ' output_result';
-        //         return toinsert;
-        //     }
-        // }
-        // return null;
+        for (let renderer of this.renderers) {
+            let data = json[renderer.mimetype];
+            if (data) {
+                return renderer(data, metadata);
+            }
+        }
+
+        if (this.fallback_renderer) {
+            let mimetype = json.keys()[0];
+            console.warn('Fallback renderer used to render mimetype ' + mimetype);
+            return this.fallback_renderer(json[mimetype], metadata);
+        }
+
+        throw new Error('Renderer for mimetypes ' + json.keys().join(', ') + ' not found.');
     }
 
     _append_mimetype(data, mimetype, metadata) {
+        var renderer = this.get_renderer(mimetype);
+        if (renderer) {
+            return renderer.render(data, metadata);
+        }
 
-    }
-
-    _render(data, renderer, metadata) {
-
+        throw new Error('Renderer for mimetype ' + mimetype + ' not found.');
     }
 
     /**
