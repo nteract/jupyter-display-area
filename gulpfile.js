@@ -1,18 +1,28 @@
 var gulp = require('gulp'),
   uglify = require('gulp-uglify'),
   babel = require("gulp-babel"),
+  browserify = require("gulp-browserify"),
   vulcanize = require("gulp-vulcanize"),
   rename = require("gulp-rename"),
   debug = require('gulp-debug'),
   shell = require('gulp-shell'),
+  concat = require('gulp-concat'),
   connect = require("gulp-connect");
 
 gulp.task('js', function () {
   return gulp.src([
     'src/jupyter-display-area.js',
-    ]).pipe(babel())
-    .pipe(uglify())
-    .pipe(gulp.dest('dist'));
+    'src/utils.js',
+    ]).pipe(babel({
+        modules: "common"
+    }))
+    .pipe(browserify({
+        insertGlobals : true,
+        debug : !gulp.env.production
+    }))
+    // .pipe(concat('jupyter-display-area.js'))
+    // .pipe(uglify())
+    .pipe(gulp.dest('predist'));
 });
 
 gulp.task('html', function () {

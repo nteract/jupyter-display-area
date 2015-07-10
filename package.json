@@ -5,7 +5,9 @@
   "main": "dist/jupyter-display-area.html",
   "readme": "README.md",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:js": "browserify src/*.js -t babelify --outfile dist/jupyter-display-area.js",
+    "build:html": "vulcanize --inline-scripts > dist/jupyter-display-area.html"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,8 @@
     "url": "https://github.com/rgbkrk/jupyter-display-area/issues"
   },
   "dependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.6",
     "es6ify": "^1.6.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
