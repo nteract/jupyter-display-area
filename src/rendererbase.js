@@ -1,4 +1,4 @@
-class RendererBase {
+export class RendererBase {
     get mimetype() {
         throw new Error('mimetype not implemented');
     }

@@ -1,5 +1,4 @@
-import * as utils from 'utils';
-import TextRenderer from 'textrenderer';
+import TextRenderer from 'textrenderer.js';
 
 // Shim & native-safe ownerDocument lookup
 var owner = (document._currentScript || document.currentScript).ownerDocument;
@@ -192,16 +191,7 @@ class JupyterDisplayArea extends HTMLElement {
     }
 
     _append_unrecognized(json) {
-        var toinsert = document.createElement('div');
-        var subarea =  document.createElement('div');
-        subarea.className = 'output_subarea output_unrecognized';
-        toinsert.append(subarea);
-
-        var anchor = document.createElement('a');
-        anchor.setAttribute('href', '#');
-        anchor.textContent = 'Unrecognized output: ' + json.output_type;
-
-        this._safe_append(toinsert);
+        this._append_mimetype('Unrecognized output: ' + json.output_type, 'text/plain');
     }
 
     _append_mime_bundle(json, metadata) {
@@ -232,6 +222,10 @@ class JupyterDisplayArea extends HTMLElement {
     }
 
     _append_mimetype(data, mimetype, metadata) {
+
+    }
+
+    _render(data, renderer, metadata) {
 
     }
 

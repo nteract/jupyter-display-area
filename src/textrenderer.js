@@ -1,6 +1,6 @@
-import RendererBase from 'rendererbase';
+import RendererBase from 'rendererbase.js';
 
-class TextRenderer extends RendererBase {
+export class TextRenderer extends RendererBase {
     get mimetype() {
         return 'text/plain';
     }
