@@ -3,7 +3,7 @@ export class RendererBase {
         throw new Error('mimetype not implemented');
     }
 
-    render(data) {
+    render(data, metadata) {
         throw new Error('render not implemented');
     }
 }
