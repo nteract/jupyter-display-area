@@ -1,4 +1,4 @@
-import * as utils from 'utils';
+import {fixConsole, fixCarriageReturn, autoLinkUrls} from 'utils.js';
 // TODO: Ref marked
 
 // Shim & native-safe ownerDocument lookup
@@ -455,7 +455,7 @@ class JupyterDisplayArea extends HTMLElement {
         data = utils.autoLinkUrls(data);
         // The only user content injected with this HTML call is
         // escaped by the fixConsole() method.
-        toinsert.innderHTML = data;
+        toinsert.innerHTML = data;
         element.append(toinsert);
         return toinsert;
     }
