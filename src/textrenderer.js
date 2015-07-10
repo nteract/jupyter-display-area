@@ -1,4 +1,4 @@
-import RendererBase from 'rendererbase.js';
+import RendererBase from './rendererbase.js';
 
 export class TextRenderer extends RendererBase {
     get mimetype() {

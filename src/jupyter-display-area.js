@@ -1,4 +1,4 @@
-import TextRenderer from 'textrenderer.js';
+import TextRenderer from './textrenderer.js';
 
 // Shim & native-safe ownerDocument lookup
 var owner = (document._currentScript || document.currentScript).ownerDocument;
