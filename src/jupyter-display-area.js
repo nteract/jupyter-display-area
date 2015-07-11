@@ -1,4 +1,4 @@
-import TextRenderer from './textrenderer.js';
+import TextRenderer from './textrenderer';
 (function() {
 
 // Shim & native-safe ownerDocument lookup
@@ -16,10 +16,11 @@ class JupyterDisplayArea extends HTMLElement {
      */
     createdCallback() {
         let template = owner.querySelector('#tmpl-jupyter-display-area');
+        let node = owner.importNode(template.content, true);
 
         this.shadow = this.createShadowRoot();
-        this.shadow.appendChild(template);
-        this.el = this.root.getElementById('outputs');
+        this.shadow.appendChild(node);
+        this.el = this.shadow.getElementById('outputs');
 
         // Initialize instance variables.
         this.renderers = [TextRenderer()];
