@@ -6,7 +6,7 @@
   "readme": "README.md",
   "scripts": {
     "install": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo 'This is totally not a test.'",
     "prebuild": "mkdirp dist && npm run clean",
     "build": "npm run build:js && npm run build:html && npm run build:vulcanize",
     "build:js": "browserify src/*.js -t babelify --outfile dist/jupyter-display-area.js",
