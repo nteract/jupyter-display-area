@@ -212,21 +212,20 @@ class JupyterDisplayArea extends HTMLElement {
         for (let renderer of this.renderers) {
             let data = json[renderer.mimetype];
             if (data) {
-                element = renderer(data, metadata);
+                element = renderer.render(data, metadata);
             }
         }
 
         if (!element && this.fallback_renderer) {
-            let mimetype = json.keys()[0];
-            console.warn('Fallback renderer used to render mimetype ' + mimetype);
-            element = this.fallback_renderer(json[mimetype], metadata);
+            console.warn('Fallback renderer used');
+            element = this.fallback_renderer.render(JSON.stringify(json));
         }
 
         if (element) {
             this.el.appendChild(element);
             return element;
         } else {
-            throw new Error('Renderer for mimetypes ' + json.keys().join(', ') + ' not found.');
+            throw new Error('Renderer for mimetypes ' + Object.keys(json).join(', ') + ' not found.');
         }
     }
 
