@@ -1,4 +1,5 @@
-import TextRenderer from './textrenderer';
+import {TextRenderer} from './textrenderer';
+
 (function() {
 
 // Shim & native-safe ownerDocument lookup
@@ -23,7 +24,7 @@ class JupyterDisplayArea extends HTMLElement {
         this.el = this.shadow.getElementById('outputs');
 
         // Initialize instance variables.
-        this.renderers = [TextRenderer()];
+        this.renderers = [new TextRenderer()];
 
         // 'Private'
         this._outputs = [];
