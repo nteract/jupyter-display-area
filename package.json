@@ -23,18 +23,6 @@
   "dependencies": {
     "babelify": "^6.1.2",
     "browserify": "^10.2.6",
-    "es6ify": "^1.6.0",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^5.1.0",
-    "gulp-browserify": "^0.5.1",
-    "gulp-connect": "^2.2.0",
-    "gulp-debug": "^2.0.1",
-    "gulp-load-plugins": "^0.10.0",
-    "gulp-plumber": "^1.0.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-ruby-sass": "^1.0.5",
-    "gulp-shell": "^0.4.2",
-    "gulp-uglify": "^1.2.0",
-    "gulp-vulcanize": "^6.0.1"
+    "vulcanize": "^1.10.1"
   }
 }
