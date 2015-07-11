@@ -216,7 +216,7 @@ class JupyterDisplayArea extends HTMLElement {
             }
         }
 
-        if (this.fallback_renderer) {
+        if (!element && this.fallback_renderer) {
             let mimetype = json.keys()[0];
             console.warn('Fallback renderer used to render mimetype ' + mimetype);
             element = this.fallback_renderer(json[mimetype], metadata);
