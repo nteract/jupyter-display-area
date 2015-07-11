@@ -1,4 +1,6 @@
 import {TextRenderer} from './textrenderer';
+import {DefaultRenderer} from './defaultrenderer';
+import {HTMLRenderer} from './htmlrenderer';
 
 (function() {
 
@@ -24,8 +26,11 @@ class JupyterDisplayArea extends HTMLElement {
         this.el = this.shadow.getElementById('outputs');
 
         // Initialize instance variables.
-        this.renderers = [new TextRenderer()];
-        this.fallback_renderer = new TextRenderer();
+        this.renderers = [
+            new TextRenderer(),
+            new HTMLRenderer()
+        ];
+        this.fallbackRenderer = new DefaultRenderer();
 
         // 'Private'
         this._outputs = [];
@@ -209,25 +214,23 @@ class JupyterDisplayArea extends HTMLElement {
 
     _append_mime_bundle(json, metadata) {
         let element;
+        let richRenderer = this.fallbackRenderer;
+
+        // Choose the last renderer as the most rich
         for (let renderer of this.renderers) {
-            //TODO: Priority order
-            let data = json.data[renderer.mimetype];
-            if (data) {
-                element = renderer.render(data, metadata);
+            if (json.data && renderer.mimetype in json.data) {
+                richRenderer = renderer;
             }
         }
 
-        if (!element && this.fallback_renderer) {
-            console.warn('Fallback renderer used');
-            element = this.fallback_renderer.render(JSON.stringify(json));
-        }
-
-        if (element) {
+        if (json.data){
+            let data = json.data[richRenderer.mimetype];
+            element = richRenderer.render(data, metadata);
             this.el.appendChild(element);
             return element;
-        } else {
-            throw new Error('Renderer for mimetypes ' + Object.keys(json).join(', ') + ' not found.');
         }
+
+        throw new Error('Renderer for ' + Object.keys(json).join(', ') + ' not found.');
     }
 
     _append_mimetype(data, mimetype, metadata) {
