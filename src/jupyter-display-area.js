@@ -210,6 +210,7 @@ class JupyterDisplayArea extends HTMLElement {
     _append_mime_bundle(json, metadata) {
         let element;
         for (let renderer of this.renderers) {
+            //TODO: Priority order
             let data = json.data[renderer.mimetype];
             if (data) {
                 element = renderer.render(data, metadata);
