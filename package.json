@@ -5,7 +5,7 @@
   "main": "dist/jupyter-display-area.html",
   "readme": "README.md",
   "scripts": {
-    "install": "npm run build",
+    "postinstall": "npm run build",
     "test": "echo 'This is totally not a test.'",
     "prebuild": "mkdirp dist && npm run clean",
     "build": "npm run build:js && npm run build:html && npm run build:vulcanize",
