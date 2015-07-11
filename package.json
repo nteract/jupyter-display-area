@@ -12,6 +12,7 @@
     "build:js": "browserify src/*.js -t babelify --outfile dist/jupyter-display-area.js",
     "build:html": "cp src/jupyter-display-area.html dist/jupyter-display-area.local.html",
     "build:vulcanize": "vulcanize --inline-scripts dist/jupyter-display-area.local.html > dist/jupyter-display-area.html",
+    "watch:build": "nodemon -q -w src/ --ext '.' --exec 'npm run build'",
     "clean": "rm -r dist/*"
   },
   "repository": {
@@ -26,6 +27,7 @@
   "dependencies": {
     "babelify": "^6.1.2",
     "browserify": "^10.2.6",
+    "nodemon": "^1.3.7",
     "vulcanize": "^1.10.1"
   }
 }

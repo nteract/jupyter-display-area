@@ -1,4 +1,5 @@
 import TextRenderer from './textrenderer.js';
+(function() {
 
 // Shim & native-safe ownerDocument lookup
 var owner = (document._currentScript || document.currentScript).ownerDocument;
@@ -251,3 +252,5 @@ class JupyterDisplayArea extends HTMLElement {
 
 // Register jupyter-display-area with the document
 document.registerElement('jupyter-display-area', JupyterDisplayArea);
+
+})();
