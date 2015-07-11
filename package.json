@@ -6,8 +6,10 @@
   "readme": "README.md",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:js": "browserify src/*.js -t babelify --outfile dist/jupyter-display-area.js",
-    "build:html": "vulcanize --inline-scripts > dist/jupyter-display-area.html"
+    "build": "npm run build:js && npm run build:html && npm run build:vulcanize",
+    "build:js": "mkdir -p dist && browserify src/*.js -t babelify --outfile dist/jupyter-display-area.js",
+    "build:html": "mkdir -p dist && cp src/jupyter-display-area.html dist/jupyter-display-area.local.html",
+    "build:vulcanize": "mkdir -p dist && vulcanize --inline-scripts dist/jupyter-display-area.local.html > dist/jupyter-display-area.html"
   },
   "repository": {
     "type": "git",
