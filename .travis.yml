@@ -2,7 +2,5 @@ language: node_js
 node_js:
   - "iojs"
 sudo: false
-before_script:
-  - npm install -g gulp
 script:
-  - gulp build
+  - npm run build
