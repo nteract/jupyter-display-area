@@ -208,26 +208,34 @@ class JupyterDisplayArea extends HTMLElement {
     }
 
     _append_mime_bundle(json, metadata) {
+        let element;
         for (let renderer of this.renderers) {
             let data = json[renderer.mimetype];
             if (data) {
-                return renderer(data, metadata);
+                element = renderer(data, metadata);
             }
         }
 
         if (this.fallback_renderer) {
             let mimetype = json.keys()[0];
             console.warn('Fallback renderer used to render mimetype ' + mimetype);
-            return this.fallback_renderer(json[mimetype], metadata);
+            element = this.fallback_renderer(json[mimetype], metadata);
         }
 
-        throw new Error('Renderer for mimetypes ' + json.keys().join(', ') + ' not found.');
+        if (element) {
+            this.el.appendChild(element);
+            return element;
+        } else {
+            throw new Error('Renderer for mimetypes ' + json.keys().join(', ') + ' not found.');
+        }
     }
 
     _append_mimetype(data, mimetype, metadata) {
         var renderer = this.get_renderer(mimetype);
         if (renderer) {
-            return renderer.render(data, metadata);
+            let element = renderer.render(data, metadata);
+            this.el.appendChild(element);
+            return element;
         }
 
         throw new Error('Renderer for mimetype ' + mimetype + ' not found.');
