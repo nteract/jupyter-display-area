@@ -4,7 +4,7 @@ Prototype Web Component for Jupyter Display areas
 
 ## Build
 
-```
+```bash
 npm install
 ```
 
@@ -12,13 +12,13 @@ Resulting web component is in `dist/jupyter-display-area.html`.
 
 ## Run the current demo
 
-```
+```bash
 npm run serve
 ```
 
 ## Including on a page
 
-```
+```html
 <script>
   // Include a polyfill if the browser isn't fully supported
   if ('registerElement' in document
