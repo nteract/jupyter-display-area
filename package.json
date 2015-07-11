@@ -5,6 +5,7 @@
   "main": "dist/jupyter-display-area.html",
   "readme": "README.md",
   "scripts": {
+    "preinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "mkdir -p dist && npm run clean",
     "build": "npm run build:js && npm run build:html && npm run build:vulcanize",
