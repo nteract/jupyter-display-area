@@ -29,7 +29,7 @@
     "url": "https://github.com/rgbkrk/jupyter-display-area/issues"
   },
   "devDependencies": {
-    "babelify": "^6.1.2",
+    "babel": "^5.6.14",
     "browserify": "^10.2.6",
     "http-server": "^0.8.0",
     "live-reload": "^1.1.0",
