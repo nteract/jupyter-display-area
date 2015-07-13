@@ -15,7 +15,7 @@
     "watch:build": "nodemon -q -w src/ --ext '.' --exec 'npm run build'",
     "serve": "http-server -p 9090",
     "test": "echo 'This is totally not a test.'",
-    "clean": "rimraf dist/*",
+    "clean": "rimraf dist/* lib/*",
     "open:dev": "opener http://localhost:9090",
     "dev": "npm run open:dev -s & parallelshell 'npm run serve -s' 'npm run watch -s'"
   },
