@@ -2420,7 +2420,7 @@
       "msg_id": "fa514ba9-7afd-41ab-9597-1806e4f689de",
       "msg_type": "execute_result",
       "session": "6a0455c4-4a6b-4d1b-9f0d-26ba251fe7c5",
-      "username": "kyle6475",
+      "username": "joyvan",
       "version": "5.0"
     },
     "idents": [
@@ -2493,7 +2493,7 @@
       "msg_id": "c0f1d0c4-e485-42f6-aa55-23eb1668ee46",
       "msg_type": "execute_request",
       "session": "b724b403-d18a-4ee2-8022-eeaa6e3cda75",
-      "username": "kyle6475",
+      "username": "jovyan",
       "version": "5.0"
     }
   }
