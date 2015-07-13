@@ -19,6 +19,5 @@
     "tests"
   ],
   "dependencies": {
-    "katex": "~0.4.3"
   }
 }
