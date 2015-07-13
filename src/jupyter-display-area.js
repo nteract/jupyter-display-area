@@ -1,6 +1,4 @@
-import {TextRenderer} from './textrenderer';
-import {DefaultRenderer} from './defaultrenderer';
-import {HTMLRenderer} from './htmlrenderer';
+import {Transformime} from "transformime";
 
 (function() {
 
@@ -10,7 +8,7 @@ var owner = (document._currentScript || document.currentScript).ownerDocument;
 /**
  * Jupyter display area.
  *
- * Used to dsiplay output from Jupyter kernels.
+ * Used to display output from Jupyter kernels.
  */
 class JupyterDisplayArea extends HTMLElement {
 
@@ -23,14 +21,11 @@ class JupyterDisplayArea extends HTMLElement {
 
         this.shadow = this.createShadowRoot();
         this.shadow.appendChild(node);
+        this.document = this.shadow.ownerDocument;
+
         this.el = this.shadow.getElementById('outputs');
 
-        // Initialize instance variables.
-        this.renderers = [
-            new TextRenderer(),
-            new HTMLRenderer()
-        ];
-        this.fallbackRenderer = new DefaultRenderer();
+        this.transformime = new Transformime();
 
         // 'Private'
         this._outputs = [];
@@ -90,6 +85,10 @@ class JupyterDisplayArea extends HTMLElement {
                 json.evalue = content.evalue;
                 json.traceback = content.traceback;
                 break;
+            case 'status':
+            case 'execute_input':
+                // Explicit ignore of status changes
+                return;
             default:
                 console.log('unhandled output message', msg);
                 return;
@@ -112,15 +111,11 @@ class JupyterDisplayArea extends HTMLElement {
             this._clear_queued = true;
         } else {
 
-            // Fix the output div's height if the clear_output is waiting for
-            // new output (it is being used in an animation).
             if (this._clear_queued) {
                 this._clear_queued = false;
             }
 
             // Clear all
-            // Remove load event handlers from img tags because we don't want
-            // them to fire if the image is never added to the page.
             let o = this.el;
             while(o.firstChild) { o.removeChild(o.firstChild); }
 
@@ -134,54 +129,42 @@ class JupyterDisplayArea extends HTMLElement {
      * @param  {object} json - output json.  See nbformat.
      */
     append_output(json) {
+        let bundle, el;
+        bundle = {};
 
         // Clear the output if clear is queued.
         if (this._clear_queued) {
             this.clear_output(false);
         }
 
-        var record_output = true;
         switch(json.output_type) {
             case 'execute_result':
-                json = this._validate_mimebundle(json);
-                this._append_mime_bundle(json);
+            case 'display_data':
+                bundle = json.data;
                 break;
             case 'stream':
-                // append_stream might have merged the output with earlier stream output
-                record_output = this._append_stream(json);
+                bundle = this.createStreamBundle(json);
                 break;
             case 'error':
-                this._append_error(json);
-                break;
-            case 'display_data':
-                // append handled below
-                json = this._validate_mimebundle(json);
-                this._append_mime_bundle(json.data, json.metadata);
+                bundle = this.createErrorBundle(json);
                 break;
             default:
                 console.warn('Unrecognized output type: ' + json.output_type);
-                this._append_unrecognized(json);
+                bundle = {'text/plain': 'Unrecognized output type' + JSON.stringify(json)};
         }
 
-        if (record_output) {
-            this._outputs.push(json);
+        el = this.transformime.transformRichest(bundle, this.document);
+        if (el) {
+            this.el.appendChild(el);
         }
-    }
 
-    get_renderer(mimetype) {
-        for (let renderer of this.renderers) {
-            if (mimetype === renderer.mimetype) {
-                return renderer;
-            }
-        }
-        return null;
     }
 
     /**
      * Appends stream data to the output area.
      * @param  {object} json - see nbformat
      */
-    _append_stream(json) {
+    createStreamBundle(json) {
         var text = json.text;
         if (typeof text !== 'string') {
             console.error('Stream output is invalid (missing text)', json);
@@ -191,10 +174,10 @@ class JupyterDisplayArea extends HTMLElement {
             return;
         }
 
-        this._append_mimetype(text, 'text/plain');
+        return {'text/plain': text};
     }
 
-    _append_error(json) {
+    createErrorBundle(json) {
         var traceback = json.traceback;
         if (traceback !== undefined && traceback.length > 0) {
             var text = '';
@@ -204,64 +187,10 @@ class JupyterDisplayArea extends HTMLElement {
             }
             text = text + '\n';
 
-            this._append_mimetype(text, 'text/plain');
+            return {'text/plain': text};
         }
     }
 
-    _append_unrecognized(json) {
-        this._append_mimetype('Unrecognized output: ' + json.output_type, 'text/plain');
-    }
-
-    _append_mime_bundle(json, metadata) {
-        let element;
-        let richRenderer = this.fallbackRenderer;
-
-        // Choose the last renderer as the most rich
-        for (let renderer of this.renderers) {
-            if (json.data && renderer.mimetype in json.data) {
-                richRenderer = renderer;
-            }
-        }
-
-        if (json.data){
-            let data = json.data[richRenderer.mimetype];
-            element = richRenderer.render(data, metadata);
-            this.el.appendChild(element);
-            return element;
-        }
-
-        throw new Error('Renderer for ' + Object.keys(json).join(', ') + ' not found.');
-    }
-
-    _append_mimetype(data, mimetype, metadata) {
-        var renderer = this.get_renderer(mimetype);
-        if (renderer) {
-            let element = renderer.render(data, metadata);
-            this.el.appendChild(element);
-            return element;
-        }
-
-        throw new Error('Renderer for mimetype ' + mimetype + ' not found.');
-    }
-
-    /**
-     * Validate a mime bundle.
-     * @param  {object} bundle
-     * @return {object} bundle
-     */
-    _validate_mimebundle(bundle) {
-        if (typeof bundle.data !== 'object') {
-            console.warn('Mimebundle missing data', bundle);
-            bundle.data = {};
-        }
-
-        if (typeof bundle.metadata !== 'object') {
-            console.warn('Mimebundle missing metadata', bundle);
-            bundle.metadata = {};
-        }
-
-        return bundle;
-    }
 }
 
 // Register jupyter-display-area with the document
