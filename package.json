@@ -4,7 +4,7 @@
   "description": "Web component for Jupyter kernel rich output/display",
   "main": "dist/jupyter-display-area.js",
   "scripts": {
-    "prebuild": "mkdirp dist && npm run clean",
+    "prebuild": "mkdirp dist && mkdirp lib && npm run clean",
     "build": "npm run build:es5 && npm run build:browser && npm run build:html && npm run build:vulcanize",
     "build:es5": "babel src --out-dir lib/ --source-maps",
     "build:browser": "browserify lib/*.js --outfile dist/jupyter-display-area.js",
