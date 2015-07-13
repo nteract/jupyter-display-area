@@ -2,18 +2,10 @@
 
 Prototype Web Component for Jupyter Display areas
 
-## Build
+## Installation
 
-```bash
-npm install
 ```
-
-Resulting web component is in `dist/jupyter-display-area.html`.
-
-## Run the current demo
-
-```bash
-npm run serve
+npm install jupyter-display-area
 ```
 
 ## Including on a page
@@ -39,4 +31,30 @@ npm run serve
     area = document.querySelector("#play-display");
     area.handle(iopub_message); // Accepts Jupyter Protocol messages
 </script>
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+### Browserified build
+
+* `dist/jupyter-display-area.html` - Web Component with fully inlined scripts
+* `dist/jupyter-display-area.local.html` - Web Component with separate script
+* `dist/jupyter-display-area.js` - Script to pair with jupyter-display-area.local.html
+
+### ES5 build and direct `src`
+
+The transpiled ES5 javascript ends up in `lib/` while the original ES6 sources
+are in `src/`. These are intended for use in Electron/Atom, though you may want
+to just use the browserified/bundled web component. Your choice!
+
+## Dev
+
+Run npm run dev to do automated watch, build, serve, and live-reload.
+
+```bash
+npm run serve
 ```
