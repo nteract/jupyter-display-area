@@ -133,6 +133,11 @@ class JupyterDisplayArea extends HTMLElement {
     /**
      * Append output to the output area.
      * @param  {object} json - output json.  See nbformat.
+     * @return {bool}      whether or not output was appended
+     */
+    /**
+     * [append_output description]
+     * @param  {[type]} json [description]
      */
     append_output(json) {
         let bundle, el;
@@ -162,7 +167,10 @@ class JupyterDisplayArea extends HTMLElement {
         el = this.transformime.transformRichest(bundle, this.document);
         if (el) {
             this.el.appendChild(el);
+            return true;
         }
+
+        return false;
 
     }
 
