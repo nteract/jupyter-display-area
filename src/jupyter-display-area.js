@@ -57,6 +57,7 @@ class JupyterDisplayArea extends HTMLElement {
      *
      * Only handles display related messages, including clear output.
      * @param  {object} msg - See Jupyter msgspec.
+     * @return {bool}     Whether the message resulted in any changes to the display area
      */
     handle(msg) {
         var json = {};
@@ -92,12 +93,13 @@ class JupyterDisplayArea extends HTMLElement {
             case 'status':
             case 'execute_input':
                 // Explicit ignore of status changes and input
-                return;
+                return false;
             default:
                 console.log('unhandled output message', msg);
-                return;
+                return false;
         }
         this.append_output(json);
+        return true;
     }
 
     /**
@@ -131,6 +133,11 @@ class JupyterDisplayArea extends HTMLElement {
     /**
      * Append output to the output area.
      * @param  {object} json - output json.  See nbformat.
+     * @return {bool}      whether or not output was appended
+     */
+    /**
+     * [append_output description]
+     * @param  {[type]} json [description]
      */
     append_output(json) {
         let bundle, el;
@@ -160,7 +167,10 @@ class JupyterDisplayArea extends HTMLElement {
         el = this.transformime.transformRichest(bundle, this.document);
         if (el) {
             this.el.appendChild(el);
+            return true;
         }
+
+        return false;
 
     }
 
