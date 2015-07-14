@@ -1,4 +1,5 @@
 import {Transformime} from "transformime";
+import {TracebackRenderer} from "./traceback-renderer";
 
 (function() {
 
@@ -26,6 +27,8 @@ class JupyterDisplayArea extends HTMLElement {
         this.el = this.shadow.getElementById('outputs');
 
         this.transformime = new Transformime();
+
+        this.transformime.renderers.push(new TracebackRenderer());
 
         // 'Private'
         this._outputs = [];
@@ -87,7 +90,7 @@ class JupyterDisplayArea extends HTMLElement {
                 break;
             case 'status':
             case 'execute_input':
-                // Explicit ignore of status changes
+                // Explicit ignore of status changes and input
                 return;
             default:
                 console.log('unhandled output message', msg);
@@ -146,7 +149,7 @@ class JupyterDisplayArea extends HTMLElement {
                 bundle = this.createStreamBundle(json);
                 break;
             case 'error':
-                bundle = this.createErrorBundle(json);
+                bundle = {'jupyter/traceback': json};
                 break;
             default:
                 console.warn('Unrecognized output type: ' + json.output_type);

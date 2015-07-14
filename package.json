@@ -42,6 +42,7 @@
     "vulcanize": "^1.10.1"
   },
   "dependencies": {
+    "ansi-to-html": "^0.3.0",
     "transformime": "0.0.2"
   }
 }
