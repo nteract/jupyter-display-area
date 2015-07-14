@@ -1,5 +1,5 @@
 import {Transformime} from "transformime";
-import {TracebackRenderer} from "./traceback-renderer";
+import {TracebackRenderer, StreamRenderer} from "./custom-renderers";
 
 (function() {
 
@@ -29,6 +29,7 @@ class JupyterDisplayArea extends HTMLElement {
         this.transformime = new Transformime();
 
         this.transformime.renderers.push(new TracebackRenderer());
+        this.transformime.renderers.push(new StreamRenderer());
 
         // 'Private'
         this._outputs = [];
@@ -146,7 +147,7 @@ class JupyterDisplayArea extends HTMLElement {
                 bundle = json.data;
                 break;
             case 'stream':
-                bundle = this.createStreamBundle(json);
+                bundle = {'jupyter/stream': json};
                 break;
             case 'error':
                 bundle = {'jupyter/traceback': json};
@@ -161,37 +162,6 @@ class JupyterDisplayArea extends HTMLElement {
             this.el.appendChild(el);
         }
 
-    }
-
-    /**
-     * Appends stream data to the output area.
-     * @param  {object} json - see nbformat
-     */
-    createStreamBundle(json) {
-        var text = json.text;
-        if (typeof text !== 'string') {
-            console.error('Stream output is invalid (missing text)', json);
-            return;
-        }
-        if (!text.replace('\r', '')) {
-            return;
-        }
-
-        return {'text/plain': text};
-    }
-
-    createErrorBundle(json) {
-        var traceback = json.traceback;
-        if (traceback !== undefined && traceback.length > 0) {
-            var text = '';
-            var len = traceback.length;
-            for (var i=0; i<len; i++) {
-                text = text + traceback[i] + '\n';
-            }
-            text = text + '\n';
-
-            return {'text/plain': text};
-        }
     }
 
 }
