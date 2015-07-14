@@ -167,6 +167,6 @@ class JupyterDisplayArea extends HTMLElement {
 }
 
 // Register jupyter-display-area with the document
-document.registerElement('jupyter-display-area', JupyterDisplayArea);
+owner.registerElement('jupyter-display-area', JupyterDisplayArea);
 
 })();
