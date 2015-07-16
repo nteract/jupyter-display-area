@@ -53,8 +53,8 @@ to just use the browserified/bundled web component. Your choice!
 
 ## Dev
 
-Run npm run dev to do automated watch, build, serve, and live-reload.
+Run `npm run dev` to do automated watch, build, serve, and live-reload.
 
 ```bash
-npm run serve
+npm run dev
 ```
