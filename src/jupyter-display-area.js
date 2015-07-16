@@ -4,7 +4,7 @@ import {TracebackRenderer, StreamRenderer} from "./custom-renderers";
 (function() {
 
 // Shim & native-safe ownerDocument lookup
-var owner = (document._currentScript || document.currentScript).ownerDocument;
+var owner = document.currentScript.ownerDocument;
 
 /**
  * Jupyter display area.

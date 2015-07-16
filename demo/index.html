@@ -3,20 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>&lt;jupyter-display-area&gt;</title>
-
-  <script>
-    if ('registerElement' in document
-      && 'createShadowRoot' in HTMLElement.prototype
-      && 'import' in document.createElement('link')
-      && 'content' in document.createElement('template')) {
-      // We're using a browser with native WC support!
-      console.log("Native web components supported!");
-    } else {
-      document.write('<script src="https:\/\/cdnjs.cloudflare.com/ajax/libs/polymer/0.3.4/platform.js"><\/script>')
-    }
-  </script>
+  <script src="../node_modules/webcomponents.js/webcomponents.min.js"></script>
   <script src="../node_modules/whatwg-fetch/fetch.js"></script>
   <link rel="import" href="../dist/jupyter-display-area.html">
   <style>
@@ -61,25 +49,37 @@
     }
 
   </style>
+  <!-- For some reason, haven't been able to grab this tag with the polyfill-->
+  <template id="tmpl-jupyter-display-area">
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <div id="outputs"></div>
+  </template>
 </head>
 <body>
   <h1>Jupyter Display Area</h1>
   <jupyter-display-area id="play-display"></jupyter-display-area>
 
   <script>
-  function consumeMessages(messages){
-      area = document.querySelector("#play-display");
-      messages.forEach(function(message) {
-          area.handle(message);
-      })
-  }
+  window.addEventListener('WebComponentsReady', function(e) {
+      function consumeMessages(messages){
+          area = document.querySelector("#play-display");
+          messages.forEach(function(message) {
+              area.handle(message);
+          })
+      }
 
-  fetch('data/sample.json')
-    .then(function(response) {
-      return response.text()
-    }).then(function(body) {
-      consumeMessages(JSON.parse(body));
-    })
+      fetch('data/sample.json')
+        .then(function(response) {
+          return response.text()
+        }).then(function(body) {
+          consumeMessages(JSON.parse(body));
+        })
+  })
   </script>
 
   <script src="//localhost:9091"></script>
