@@ -27,6 +27,7 @@
   "author": "Kyle Kelley",
   "license": "BSD-3-Clause",
   "bugs": {
+    "exist": "likely",
     "url": "https://github.com/rgbkrk/jupyter-display-area/issues"
   },
   "devDependencies": {
@@ -44,6 +45,6 @@
   },
   "dependencies": {
     "ansi-to-html": "^0.3.0",
-    "transformime": "0.0.2"
+    "transformime": "0.0.4"
   }
 }
