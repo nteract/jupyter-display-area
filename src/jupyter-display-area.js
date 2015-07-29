@@ -57,7 +57,7 @@ class JupyterDisplayArea extends HTMLElement {
 
         // Transformers are in reverse priority order
         // so that new ones can be `push`ed on with higher priority
-        transformers = [
+        var transformers = [
             new TextTransformer(),
             new PDFTransformer(),
             new ImageTransformer('image/jpeg'),
@@ -206,10 +206,10 @@ class JupyterDisplayArea extends HTMLElement {
                 bundle = {'text/plain': 'Unrecognized output type' + JSON.stringify(json)};
         }
 
-        elementPromise = this.transformime.transformRichest(bundle, this.document);
+        let elementPromise = this.transformime.transformRichest(bundle, this.document);
 
-        elementPromise.then(element => {
-            this.el.appendChild(element);
+        elementPromise.then(elementBundle => {
+            this.el.appendChild(elementBundle.el);
         });
 
     }
