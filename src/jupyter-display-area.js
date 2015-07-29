@@ -84,7 +84,7 @@ class JupyterDisplayArea extends HTMLElement {
      */
     fromJSON(outputs) {
         // TODO: Update for promises
-        outputs.map(this.append_output.bind(this));
+        outputs.map(this.appendOutput.bind(this));
     }
 
     /**
@@ -113,7 +113,7 @@ class JupyterDisplayArea extends HTMLElement {
                 // The default behavior is the same (stdout=stderr=display=True, wait=False),
                 // so v4 messages will still be properly handled,
                 // except for the rarely used clearing less than all output.
-                this.clear_output(msg.content.wait || false);
+                this.clearOutput(msg.content.wait || false);
                 return;
             case 'stream':
                 json.text = content.text;
@@ -141,19 +141,19 @@ class JupyterDisplayArea extends HTMLElement {
                 console.log('unhandled output message', msg);
                 return false;
         }
-        return this.append_output(json);
+        return this.appendOutput(json);
     }
 
     /**
      * Remove all elements from the display area.
      * @param  {boolean} wait - wait until the next display message before clearing.
      */
-    clear_output(wait) {
+    clearOutput(wait) {
         if (wait) {
 
             // If a clear is queued, clear before adding another to the queue.
             if (this._clear_queued) {
-                this.clear_output(false);
+                this.clearOutput(false);
             }
 
             this._clear_queued = true;
@@ -178,16 +178,16 @@ class JupyterDisplayArea extends HTMLElement {
      * @return {bool}      whether or not output was appended
      */
     /**
-     * [append_output description]
+     * [appendOutput description]
      * @param  {[type]} json [description]
      */
-    append_output(json) {
+    appendOutput(json) {
         let bundle, el;
         bundle = {};
 
         // Clear the output if clear is queued.
         if (this._clear_queued) {
-            this.clear_output(false);
+            this.clearOutput(false);
         }
 
         switch(json.output_type) {
