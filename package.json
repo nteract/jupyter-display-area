@@ -47,6 +47,6 @@
   "dependencies": {
     "ansi-to-html": "^0.3.0",
     "transformime": "1.0.0",
-    "transformime-jupyter-transformers": "0.0.2"
+    "transformime-jupyter-transformers": "0.0.4"
   }
 }

@@ -1,5 +1,17 @@
-import {Transformime} from "transformime";
-import {TracebackRenderer, StreamRenderer} from "./custom-renderers";
+import {
+    Transformime,
+    TextTransformer,
+    ImageTransformer,
+    HTMLTransformer
+} from "transformime";
+
+import {
+    StreamTransformer,
+    TracebackTransformer,
+    MarkdownTransformer,
+    LaTeXTransformer,
+    PDFTransformer
+} from "transformime-jupyter-transformers";
 
 (function() {
 
@@ -26,10 +38,40 @@ class JupyterDisplayArea extends HTMLElement {
 
         this.el = this.shadow.getElementById('outputs');
 
-        this.transformime = new Transformime();
 
-        this.transformime.renderers.push(new TracebackRenderer());
-        this.transformime.renderers.push(new StreamRenderer());
+        /**
+         * Original display order
+         *
+        OutputArea.display_order = [
+            'application/javascript',
+            'text/html',
+            'text/markdown',
+            'text/latex',
+            'image/svg+xml',
+            'image/png',
+            'image/jpeg',
+            'application/pdf',
+            'text/plain'
+        ];
+        */
+
+        // Transformers are in reverse priority order
+        // so that new ones can be `push`ed on with higher priority
+        transformers = [
+            new TextTransformer(),
+            new PDFTransformer(),
+            new ImageTransformer('image/jpeg'),
+            new ImageTransformer('image/gif'),
+            new ImageTransformer('image/png'),
+            // SVG would go here, IF I HAD ONE
+            new StreamTransformer(),
+            new TracebackTransformer(),
+            new MarkdownTransformer(),
+            new HTMLTransformer()
+            // JavaScript would go here, IF I HAD ONE
+        ];
+
+        this.transformime = new Transformime(transformers);
 
         // 'Private'
         this._outputs = [];
@@ -41,6 +83,7 @@ class JupyterDisplayArea extends HTMLElement {
      * @param  {object} outputs - See nbformat
      */
     fromJSON(outputs) {
+        // TODO: Update for promises
         outputs.map(this.append_output.bind(this));
     }
 
@@ -57,7 +100,7 @@ class JupyterDisplayArea extends HTMLElement {
      *
      * Only handles display related messages, including clear output.
      * @param  {object} msg - See Jupyter msgspec.
-     * @return {bool}     Whether the message resulted in any changes to the display area
+     * @return {Promise}     Happy promise
      */
     handle(msg) {
         var json = {};
@@ -98,8 +141,7 @@ class JupyterDisplayArea extends HTMLElement {
                 console.log('unhandled output message', msg);
                 return false;
         }
-        this.append_output(json);
-        return true;
+        return this.append_output(json);
     }
 
     /**
@@ -164,13 +206,11 @@ class JupyterDisplayArea extends HTMLElement {
                 bundle = {'text/plain': 'Unrecognized output type' + JSON.stringify(json)};
         }
 
-        el = this.transformime.transformRichest(bundle, this.document);
-        if (el) {
-            this.el.appendChild(el);
-            return true;
-        }
+        elementPromise = this.transformime.transformRichest(bundle, this.document);
 
-        return false;
+        elementPromise.then(element => {
+            this.el.appendChild(element);
+        });
 
     }
 
