@@ -103,6 +103,10 @@ class JupyterDisplayArea extends HTMLElement {
      * @return {Promise}     Happy promise
      */
     handle(msg) {
+        if(! msg.header || !msg.header.msg_type) {
+            return;
+        }
+        
         var json = {};
         var msg_type = json.output_type = msg.header.msg_type;
         var content = msg.content;
