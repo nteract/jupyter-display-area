@@ -69,7 +69,10 @@
       function consumeMessages(messages){
           area = document.querySelector("#play-display");
           messages.forEach(function(message) {
-              area.handle(message);
+              area.handle(message).catch(function(data){
+                  // Just error on invalid uses here
+                  console.error(data);
+              });
           })
       }
 
