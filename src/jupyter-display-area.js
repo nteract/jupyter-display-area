@@ -106,7 +106,7 @@ class JupyterDisplayArea extends HTMLElement {
         if(! msg.header || !msg.header.msg_type) {
             return;
         }
-        
+
         var json = {};
         var msg_type = json.output_type = msg.header.msg_type;
         var content = msg.content;
@@ -181,10 +181,6 @@ class JupyterDisplayArea extends HTMLElement {
      * @param  {object} json - output json.  See nbformat.
      * @return {bool}      whether or not output was appended
      */
-    /**
-     * [appendOutput description]
-     * @param  {[type]} json [description]
-     */
     appendOutput(json) {
         let bundle, el;
         bundle = {};
@@ -215,7 +211,8 @@ class JupyterDisplayArea extends HTMLElement {
         elementPromise.then(elementBundle => {
             this.el.appendChild(elementBundle.el);
         });
-
+        
+        return elementPromise;
     }
 
 }
