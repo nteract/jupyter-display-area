@@ -83,8 +83,7 @@ class JupyterDisplayArea extends HTMLElement {
      * @param  {object} outputs - See nbformat
      */
     fromJSON(outputs) {
-        // TODO: Update for promises
-        outputs.map(this.appendOutput.bind(this));
+        return Promise.all(outputs.map(this.appendOutput.bind(this)));
     }
 
     /**
@@ -103,7 +102,7 @@ class JupyterDisplayArea extends HTMLElement {
      * @return {Promise}     Happy promise
      */
     handle(msg) {
-        if(! msg.header || !msg.header.msg_type) {
+        if(!msg.header || !msg.header.msg_type) {
             return;
         }
 
@@ -118,7 +117,7 @@ class JupyterDisplayArea extends HTMLElement {
                 // so v4 messages will still be properly handled,
                 // except for the rarely used clearing less than all output.
                 this.clearOutput(msg.content.wait || false);
-                return;
+                return Promise.resolve();
             case 'stream':
                 json.text = content.text;
                 json.name = content.name;
@@ -140,10 +139,9 @@ class JupyterDisplayArea extends HTMLElement {
             case 'status':
             case 'execute_input':
                 // Explicit ignore of status changes and input
-                return false;
+                return Promise.reject("Jupyter Display Area doesn't handle status or execute_input");
             default:
-                console.log('unhandled output message', msg);
-                return false;
+                return Promise.reject("Unhandled output message " + JSON.stringify(msg));
         }
         return this.appendOutput(json);
     }
@@ -179,7 +177,7 @@ class JupyterDisplayArea extends HTMLElement {
     /**
      * Append output to the output area.
      * @param  {object} json - output json.  See nbformat.
-     * @return {bool}      whether or not output was appended
+     * @return {Promise}
      */
     appendOutput(json) {
         let bundle, el;
@@ -211,7 +209,7 @@ class JupyterDisplayArea extends HTMLElement {
         elementPromise.then(elementBundle => {
             this.el.appendChild(elementBundle.el);
         });
-        
+
         return elementPromise;
     }
 
