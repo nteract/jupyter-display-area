@@ -143,6 +143,9 @@ class JupyterDisplayArea extends HTMLElement {
             default:
                 return Promise.reject("Unhandled output message " + JSON.stringify(msg));
         }
+
+        this._outputs.push(json);
+
         return this.appendOutput(json);
     }
 
