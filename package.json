@@ -45,7 +45,6 @@
     "webcomponents.js": "^0.7.2"
   },
   "dependencies": {
-    "ansi-to-html": "^0.3.0",
     "transformime": "1.0.0",
     "transformime-jupyter-transformers": "0.0.4"
   }
