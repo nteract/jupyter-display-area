@@ -34,7 +34,7 @@ class JupyterDisplayArea extends HTMLElement {
 
         this.shadow = this.createShadowRoot();
         this.shadow.appendChild(node);
-        this.document = this.shadow.ownerDocument;
+        this.document = this.shadow.ownerDocument || this.shadowRoot.ownerDocument;
 
         this.el = this.shadow.getElementById('outputs');
 
@@ -207,7 +207,7 @@ class JupyterDisplayArea extends HTMLElement {
                 bundle = {'text/plain': 'Unrecognized output type' + JSON.stringify(json)};
         }
 
-        let elementPromise = this.transformime.transformRichest(bundle, this.document);
+        let elementPromise = this.transformime.transform(bundle, this.document);
 
         elementPromise.then(elementBundle => {
             this.el.appendChild(elementBundle.el);

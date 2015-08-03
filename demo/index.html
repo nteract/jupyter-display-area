@@ -65,7 +65,7 @@
   <jupyter-display-area id="play-display"></jupyter-display-area>
 
   <script>
-  window.addEventListener('WebComponentsReady', function(e) {
+  window.addEventListener('DOMContentLoaded', function(e) {
       function consumeMessages(messages){
           area = document.querySelector("#play-display");
           messages.forEach(function(message) {
@@ -82,7 +82,7 @@
         }).then(function(body) {
           consumeMessages(JSON.parse(body));
         })
-  })
+  });
   </script>
 
   <script src="//localhost:9091"></script>
