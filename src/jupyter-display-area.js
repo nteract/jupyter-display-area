@@ -6,11 +6,10 @@ import {
 } from "transformime";
 
 import {
-    StreamTransformer,
-    TracebackTransformer,
-    MarkdownTransformer,
-    LaTeXTransformer,
-    PDFTransformer
+    consoleTextTransform,
+    markdownTransform,
+    LaTeXTransform,
+    PDFTransform
 } from "transformime-jupyter-transformers";
 
 (function() {
@@ -34,7 +33,7 @@ class JupyterDisplayArea extends HTMLElement {
 
         this.shadow = this.createShadowRoot();
         this.shadow.appendChild(node);
-        this.document = this.shadow.ownerDocument;
+        this.document = this.shadow.ownerDocument || this.shadowRoot.ownerDocument;
 
         this.el = this.shadow.getElementById('outputs');
 
@@ -58,16 +57,14 @@ class JupyterDisplayArea extends HTMLElement {
         // Transformers are in reverse priority order
         // so that new ones can be `push`ed on with higher priority
         var transformers = [
-            new TextTransformer(),
-            new PDFTransformer(),
-            new ImageTransformer('image/jpeg'),
-            new ImageTransformer('image/gif'),
-            new ImageTransformer('image/png'),
+            TextTransformer,
+            PDFTransform,
+            ImageTransformer,
             // SVG would go here, IF I HAD ONE
-            new StreamTransformer(),
-            new TracebackTransformer(),
-            new MarkdownTransformer(),
-            new HTMLTransformer()
+            consoleTextTransform,
+            LaTeXTransform,
+            markdownTransform,
+            HTMLTransformer
             // JavaScript would go here, IF I HAD ONE
         ];
 
@@ -197,17 +194,28 @@ class JupyterDisplayArea extends HTMLElement {
                 bundle = json.data;
                 break;
             case 'stream':
-                bundle = {'jupyter/stream': json};
+                bundle = {'jupyter/console-text': json.data.text};
                 break;
             case 'error':
-                bundle = {'jupyter/traceback': json};
+                // The parts that used to be the TracebackTransform
+                let text, traceback;
+                traceback = json.traceback;
+                if (traceback !== undefined && traceback.length > 0) {
+                    text = '';
+                    var len = traceback.length;
+                    for (var i=0; i<len; i++) {
+                        text = text + traceback[i] + '\n';
+                    }
+                    text = text + '\n';
+                }
+                bundle = {'jupyter/console-text': text};
                 break;
             default:
                 console.warn('Unrecognized output type: ' + json.output_type);
                 bundle = {'text/plain': 'Unrecognized output type' + JSON.stringify(json)};
         }
 
-        let elementPromise = this.transformime.transformRichest(bundle, this.document);
+        let elementPromise = this.transformime.transform(bundle, this.document);
 
         elementPromise.then(elementBundle => {
             this.el.appendChild(elementBundle.el);
