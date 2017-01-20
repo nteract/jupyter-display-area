@@ -1,5 +1,7 @@
 # jupyter-display-area
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/nteract/jupyter-display-area.svg)](https://greenkeeper.io/)
+
 Prototype Web Component for Jupyter Display areas
 
 ## Installation
