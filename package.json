@@ -31,9 +31,9 @@
     "url": "https://github.com/rgbkrk/jupyter-display-area/issues"
   },
   "devDependencies": {
-    "babel": "^5.8.20",
-    "browserify": "^11.0.1",
-    "http-server": "^0.8.0",
+    "babel": "^6.5.2",
+    "browserify": "^13.3.0",
+    "http-server": "^0.9.0",
     "live-reload": "^1.1.0",
     "mkdirp": "^0.5.1",
     "nodemon": "^1.4.0",
@@ -42,10 +42,10 @@
     "rimraf": "^2.4.2",
     "vulcanize": "^1.10.2",
     "webcomponents.js": "^0.7.2",
-    "whatwg-fetch": "^0.9.0"
+    "whatwg-fetch": "^2.0.2"
   },
   "dependencies": {
-    "transformime": "^2.0.0",
-    "transformime-jupyter-transformers": "^0.1.0"
+    "transformime": "^3.2.1",
+    "transformime-jupyter-transformers": "^1.0.1"
   }
 }
